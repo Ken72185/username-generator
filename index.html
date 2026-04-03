@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Username Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        body {
+            background-color: #0f0f11;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            margin: 0;
+        }
+        h2 {
+            color: #b088f9;
+            text-shadow: 0 0 10px #b088f955;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+        input {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #1a1a1e;
+            color: #fff;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #b088f9;
+            box-shadow: 0 0 8px #b088f944;
+        }
+        button {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: #b088f9;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #9a66f7;
+            transform: translateY(-2px);
+        }
+        #results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            max-width: 800px;
+            justify-content: center;
+        }
+        .username-card {
+            background: #1a1a1e;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #2a2a30;
+            font-size: 18px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .username-card:hover {
+            border-color: #b088f9;
+            color: #b088f9;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>✨ Username Aesthetic Generator ✨</h2>
+    
+    <div class="input-container">
+        <input type="text" id="nameInput" placeholder="Masukin nama lu (misal: ken)" autocomplete="off" />
+        <button onclick="generateUsernames()">Generate!</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        function generateUsernames() {
+            const baseName = document.getElementById('nameInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('results');
+            
+            // Clear hasil sebelumnya
+            resultsDiv.innerHTML = '';
+
+            if (!baseName) {
+                alert("Masukin nama dulu brok!");
+                return;
+            }
+
+            // --- DATABASE AESTHETIC ---
+            const prefixes = ["itz.", "real.", "vx.", "xX_", "prod.", "lost.", "not."];
+            const suffixes = [".exe", "_xX", "sz", "xyz", "++", "1337", "v2"];
+            const symbols = ["✧", "★", "☁", "𖤐", "♡", "☠", "♠"];
+
+            let results = new Set(); // Pake Set biar nggak ada hasil yang duplikat
+
+            // 1. Spaced (Vaporwave style)
+            results.add(baseName.split('').join(' '));
+
+            // 2. Tambah Prefix & Suffix biasa
+            prefixes.forEach(p => results.add(p + baseName));
+            suffixes.forEach(s => results.add(baseName + s));
+
+            // 3. Gabungan Prefix + Suffix
+            results.add(`xX_${baseName}_Xx`);
+            results.add(`- ${baseName} -`);
+
+            // 4. Wrapping pakai Simbol
+            symbols.forEach(sym => results.add(`${sym}${baseName}${sym}`));
+
+            // 5. Penggantian Huruf Vokal (Leet Speak tipis-tipis)
+            let leetName = baseName.replace(/a/g, '4').replace(/e/g, '3').replace(/i/g, '1').replace(/o/g, '0');
+            if (leetName !== baseName) results.add(leetName);
+
+            // 6. Gaya Jepang / Anime (nambahin 'kun', 'chan', 'san')
+            results.add(`${baseName}kun`);
+            results.add(`${baseName}z`);
+            
+            // 7. Capitalize huruf pertama
+            const capitalized = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+            results.add(`I_am_${capitalized}`);
+
+            // --- RENDER KE LAYAR ---
+            results.forEach(uname => {
+                const div = document.createElement('div');
+                div.className = 'username-card';
+                div.textContent = uname;
+                
+                // Fitur tambahan: Kalau di-klik langsung copy ke clipboard
+                div.onclick = () => {
+                    navigator.clipboard.writeText(uname);
+                    div.style.borderColor = "#4caf50";
+                    div.style.color = "#4caf50";
+                    setTimeout(() => {
+                        div.style.borderColor = "#2a2a30";
+                        div.style.color = "#e0e0e0";
+                    }, 500);
+                };
+                
+                resultsDiv.appendChild(div);
+            });
+        }
+
+        // Biar bisa enter langsung generate
+        document.getElementById("nameInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                generateUsernames();
+            }
+        });
+    </script>
+</body>
+</html>
