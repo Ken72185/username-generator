@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aesthetic Username Generator</title>
+    <title>Elite Username Generator</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,8 +19,8 @@
             margin: 0;
         }
         h2 {
-            color: #b088f9;
-            text-shadow: 0 0 10px #b088f955;
+            color: #ff6b6b;
+            text-shadow: 0 0 10px #ff6b6b55;
             margin-bottom: 30px;
             text-align: center;
         }
@@ -43,13 +43,13 @@
             transition: 0.3s;
         }
         input:focus {
-            border-color: #b088f9;
-            box-shadow: 0 0 8px #b088f944;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 8px #ff6b6b44;
         }
         button {
             padding: 12px 20px;
             cursor: pointer;
-            background: #b088f9;
+            background: #ff6b6b;
             color: #000;
             border: none;
             border-radius: 8px;
@@ -58,14 +58,14 @@
             transition: 0.3s;
         }
         button:hover {
-            background: #9a66f7;
+            background: #ff4c4c;
             transform: translateY(-2px);
         }
         #results {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            max-width: 800px;
+            max-width: 900px;
             justify-content: center;
         }
         .username-card {
@@ -73,21 +73,22 @@
             padding: 12px 20px;
             border-radius: 8px;
             border: 1px solid #2a2a30;
-            font-size: 18px;
+            font-size: 17px;
             letter-spacing: 1px;
             cursor: pointer;
             transition: 0.2s;
         }
         .username-card:hover {
-            border-color: #b088f9;
-            color: #b088f9;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
             transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <h2>✨ Username Aesthetic Generator ✨</h2>
+    <h2>🔥 Elite Surname Generator 🔥</h2>
     
     <div class="input-container">
         <input type="text" id="nameInput" placeholder="Masukin nama lu (misal: ken)" autocomplete="off" />
@@ -98,49 +99,63 @@
 
     <script>
         function generateUsernames() {
-            const baseName = document.getElementById('nameInput').value.trim().toLowerCase();
+            const rawName = document.getElementById('nameInput').value.trim();
             const resultsDiv = document.getElementById('results');
             
             // Clear hasil sebelumnya
             resultsDiv.innerHTML = '';
 
-            if (!baseName) {
+            if (!rawName) {
                 alert("Masukin nama dulu brok!");
                 return;
             }
 
-            // --- DATABASE AESTHETIC ---
-            const prefixes = ["itz.", "real.", "vx.", "xX_", "prod.", "lost.", "not."];
-            const suffixes = [".exe", "_xX", "sz", "xyz", "++", "1337", "v2"];
-            const symbols = ["✧", "★", "☁", "𖤐", "♡", "☠", "♠"];
+            const baseName = rawName.toLowerCase();
+            const capName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+            const initial = baseName.charAt(0).toUpperCase();
 
-            let results = new Set(); // Pake Set biar nggak ada hasil yang duplikat
+            // --- DATABASE MARGA ELIT / NGGAK PASARAN ---
+            const eliteSurnames = [
+                "O'Brien", "Sinclair", "Vesper", "Thorne", 
+                "Sterling", "Blackwood", "Carmichael", "Valois", 
+                "Mercer", "Cross", "Belmont", "Holloway", 
+                "Lancaster", "Devereux", "Gallagher"
+            ];
 
-            // 1. Spaced (Vaporwave style)
-            results.add(baseName.split('').join(' '));
+            // Tambahan prefix/suffix estetik biar makin bervariasi
+            const aestheticPrefixes = ["kx.", "vamp.", "saint.", "lord.", "arch."];
 
-            // 2. Tambah Prefix & Suffix biasa
-            prefixes.forEach(p => results.add(p + baseName));
-            suffixes.forEach(s => results.add(baseName + s));
+            let results = new Set(); 
 
-            // 3. Gabungan Prefix + Suffix
-            results.add(`xX_${baseName}_Xx`);
-            results.add(`- ${baseName} -`);
+            // 1. Kombinasi Marga Klasik (Contoh: Ken Sinclair)
+            eliteSurnames.forEach(surname => {
+                results.add(`${capName} ${surname}`);
+            });
 
-            // 4. Wrapping pakai Simbol
-            symbols.forEach(sym => results.add(`${sym}${baseName}${sym}`));
+            // 2. Kombinasi Underscore / Titik buat IG (Contoh: ken.vesper, ken_blackwood)
+            eliteSurnames.forEach(surname => {
+                let lowerSurname = surname.toLowerCase().replace("'", ""); // Hilangin tanda petik buat username IG
+                results.add(`${baseName}.${lowerSurname}`);
+                results.add(`${baseName}_${lowerSurname}`);
+            });
 
-            // 5. Penggantian Huruf Vokal (Leet Speak tipis-tipis)
-            let leetName = baseName.replace(/a/g, '4').replace(/e/g, '3').replace(/i/g, '1').replace(/o/g, '0');
-            if (leetName !== baseName) results.add(leetName);
+            // 3. Format Inisial Depan (Contoh: K. Sterling, K.Holloway)
+            eliteSurnames.forEach(surname => {
+                results.add(`${initial}. ${surname}`);
+                results.add(`${initial}.${surname.toLowerCase()}`);
+            });
 
-            // 6. Gaya Jepang / Anime (nambahin 'kun', 'chan', 'san')
-            results.add(`${baseName}kun`);
-            results.add(`${baseName}z`);
-            
-            // 7. Capitalize huruf pertama
-            const capitalized = baseName.charAt(0).toUpperCase() + baseName.slice(1);
-            results.add(`I_am_${capitalized}`);
+            // 4. Format Digabung / Tanpa Spasi (Contoh: kencarmichael)
+            eliteSurnames.forEach(surname => {
+                let lowerSurname = surname.toLowerCase().replace("'", "");
+                results.add(`${baseName}${lowerSurname}`);
+            });
+
+            // 5. Tambahan Prefix Estetik + Marga (Contoh: kx.ken.thorne)
+            aestheticPrefixes.forEach(prefix => {
+                let randomSurname = eliteSurnames[Math.floor(Math.random() * eliteSurnames.length)].toLowerCase().replace("'", "");
+                results.add(`${prefix}${baseName}.${randomSurname}`);
+            });
 
             // --- RENDER KE LAYAR ---
             results.forEach(uname => {
@@ -148,7 +163,6 @@
                 div.className = 'username-card';
                 div.textContent = uname;
                 
-                // Fitur tambahan: Kalau di-klik langsung copy ke clipboard
                 div.onclick = () => {
                     navigator.clipboard.writeText(uname);
                     div.style.borderColor = "#4caf50";
@@ -163,7 +177,6 @@
             });
         }
 
-        // Biar bisa enter langsung generate
         document.getElementById("nameInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 event.preventDefault();
